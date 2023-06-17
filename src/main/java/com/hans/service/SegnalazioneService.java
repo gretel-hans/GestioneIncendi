@@ -27,18 +27,27 @@ public class SegnalazioneService {
 	@Autowired SegnalazioneRepository db;
 	@Autowired AllarmeService dbAllarme;
 	
-	 GestioneProcessoSonda gestione= new GestioneProcessoSonda();
-	
+	GestioneProcessoSonda gPS=new GestioneProcessoSonda();
 	ProcessoSonda p1= new ProcessoSondaConcreto();
 	
 	
-	
-	
 	public Segnalazione salvaSegnalazioni(Segnalazione s) {
+		 gPS.aggiungiProcesso(p1);
+	   
 		Segnalazione segnalazione=db.save(s);
-		gestione.aggiungiProcesso(p1);		
-		gestione.allertaProcesso(segnalazione);
-		
+		if(s.getLivelloFumo()>=5) {
+			Allarme a=new Allarme();
+			a.setSegnalazione(s);
+			if(s.getLivelloFumo()>=5 &&s.getLivelloFumo()<=7) {
+				a.setLivelloPeriocolosita(LivelloPericolosita.Medio);
+				dbAllarme.salvaAllarme(a);
+				 gPS.allertaProcesso(s);
+			}else if(s.getLivelloFumo()>7) {
+				a.setLivelloPeriocolosita(LivelloPericolosita.Alto);
+				dbAllarme.salvaAllarme(a);
+				gPS.allertaProcesso(s);
+			}
+		}
 		return segnalazione;
 	}
 	

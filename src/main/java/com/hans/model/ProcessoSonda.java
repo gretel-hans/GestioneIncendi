@@ -1,5 +1,5 @@
 package com.hans.model;
 
 public interface ProcessoSonda {
-void update(Allarme a);
+void update(Segnalazione s);
 }

@@ -6,17 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hans.model.Allarme;
+import com.hans.model.GestioneProcessoSonda;
+import com.hans.model.ProcessoSonda;
+import com.hans.model.ProcessoSondaConcreto;
 import com.hans.repository.AllarmeRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AllarmeService {
 	
-	@Autowired AllarmeRepository db;;
+
+	@Autowired AllarmeRepository db;
 	
 	public Allarme salvaAllarme(Allarme s) {
 		//System.out.println("Partito l'allarme nell'edificio con coordinate latitudine: "+s.getSegnalazione().getLat()+" longetudine: "+s.getSegnalazione().getLon()+", livello pericolosità: "+s.getLivelloPeriocolosita());
-		return db.save(s);
+		Allarme allarme=db.save(s);
+       
+		return allarme;
 		
 	}
 	

@@ -47,7 +47,7 @@ public class GestioneIncendiRunner implements CommandLineRunner{
     	listaSegnalazioni.add(new Segnalazione(sondaService.trovaSonda(1l), 3,LocalDateTime.now()));
     	listaSegnalazioni.add(new Segnalazione(sondaService.trovaSonda(3l), 5,LocalDateTime.now()));
     	listaSegnalazioni.add(new Segnalazione(sondaService.trovaSonda(2l), 7,LocalDateTime.now()));
-    	listaSegnalazioni.add(new Segnalazione(sondaService.trovaSonda(4l), 8,LocalDateTime.now()));
+    	listaSegnalazioni.add(new Segnalazione(sondaService.trovaSonda(4l), 2,LocalDateTime.now()));
     	listaSegnalazioni.forEach(s->segnalazioneService.salvaSegnalazioni(s));
     	
     	
