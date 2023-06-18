@@ -36,8 +36,21 @@ public class AllarmeService {
 			return s;			
 		}else {			
 			throw new EntityNotFoundException("ERRORE!! La voce di allarme cercata non esiste!!"); 
-		}
-			
+		}	
 	}
+	
+	
+	public Allarme trovaAllarmeConIdSegnalazione(Long id) {
+		return db.findBySegnalazioneId(id);
+	}
+	
+	public boolean allarmeeEsistenteConId(Long id) {
+		if (db.existsById(id)){
+			return true;	
+		}else
+		return false;
+	}
+	
+
 	
 }

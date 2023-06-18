@@ -1,5 +1,9 @@
 package com.hans.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import com.hans.enums.LivelloPericolosita;
 
 import jakarta.persistence.Column;
@@ -31,8 +35,15 @@ public class Allarme {
 	@Column(name="livello_periocolosita")
 	private LivelloPericolosita livelloPeriocolosita;
 
+	@Column(name="data_allarme", nullable=false)
+	private LocalDate dataAllarme;
+	
+	@Column(name="ora_allarme", nullable=false)
+	private LocalTime oraAllarme;
+	
 	@OneToOne
 	@JoinColumn(nullable = false)
 	private Segnalazione segnalazione;
+	
 	
 }

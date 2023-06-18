@@ -15,6 +15,7 @@ import com.hans.model.ProcessoSonda;
 import com.hans.model.ProcessoSondaConcreto;
 import com.hans.model.Segnalazione;
 import com.hans.model.Sonda;
+import com.hans.service.AllarmeService;
 import com.hans.service.EdificioService;
 import com.hans.service.SegnalazioneService;
 import com.hans.service.SondaService;
@@ -26,11 +27,13 @@ public class GestioneIncendiRunner implements CommandLineRunner{
 	@Autowired EdificioService edificioService;
 	@Autowired SondaService sondaService;
 	@Autowired SegnalazioneService segnalazioneService;
+	@Autowired AllarmeService allarmeService;
 	
 	
 	@Override
 	public void run(String... args) throws Exception {
     System.out.println("Runner Gestione Incendi...");
+    
     
     	Edificio e=new Edificio(null,TipoEdificio.Casa, 10.53, 20.90);
     	edificioService.salvaEdificio(e);
@@ -52,7 +55,10 @@ public class GestioneIncendiRunner implements CommandLineRunner{
     	listaSegnalazioni.forEach(s->segnalazioneService.salvaSegnalazioni(s));
     	
     	
-
+    	System.out.println("ecco risultato: "+allarmeService.trovaAllarmeConIdSegnalazione(2l));
+    	 
+    	 
+    	
 	}
 
 }

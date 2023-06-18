@@ -17,7 +17,7 @@ import com.hans.model.Edificio;
 import com.hans.service.EdificioService;
 
 @RestController
-@RequestMapping("/allarme/edifici")
+@RequestMapping("/gestioneIncendi/edifici")
 public class EdificioController {
 
 	@Autowired EdificioService db;

@@ -39,6 +39,7 @@ public class Segnalazione {
 	
 	@Column(name="data_ora_segnalazione", nullable=false)
 	private LocalDateTime dataOraSegnalazione;
+	
 
 	
 	public Segnalazione(Sonda sonda, Integer livelloFumo, LocalDateTime dataOraSegnalazione) {

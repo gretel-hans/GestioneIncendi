@@ -19,7 +19,7 @@ import com.hans.service.EdificioService;
 import com.hans.service.SondaService;
 
 @RestController
-@RequestMapping("/allarme/sonde")
+@RequestMapping("/gestioneIncendi/sonde")
 public class SondaController {
 
 	@Autowired SondaService db;

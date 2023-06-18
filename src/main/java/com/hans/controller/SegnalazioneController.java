@@ -21,7 +21,7 @@ import com.hans.service.SegnalazioneService;
 import com.hans.service.SondaService;
 
 @RestController
-@RequestMapping("/allarme/segnalazioni")
+@RequestMapping("/gestioneIncendi/segnalazioni")
 public class SegnalazioneController {
 
 	@Autowired SegnalazioneService db;

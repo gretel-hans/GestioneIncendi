@@ -1,5 +1,7 @@
 package com.hans.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class SegnalazioneService {
 			if(s.getLivelloFumo()>=5) {
 				Allarme a=new Allarme();
 				a.setSegnalazione(s);
+				a.setDataAllarme(LocalDate.of(s.getDataOraSegnalazione().getYear(), s.getDataOraSegnalazione().getMonthValue(), s.getDataOraSegnalazione().getDayOfMonth()));
+				a.setOraAllarme(LocalTime.of(s.getDataOraSegnalazione().getHour(), s.getDataOraSegnalazione().getMinute(), s.getDataOraSegnalazione().getSecond()));
+				
 				if(s.getLivelloFumo()>=5 &&s.getLivelloFumo()<=7) {
 					a.setLivelloPeriocolosita(LivelloPericolosita.Medio);
 					dbAllarme.salvaAllarme(a);
@@ -66,8 +71,10 @@ public class SegnalazioneService {
 			gPS.aggiungiProcesso(p1);
 			Segnalazione segnalazione=db.save(s);
 			if(s.getLivelloFumo()>=5) {
-				Allarme a=new Allarme();
+				Allarme a=dbAllarme.trovaAllarmeConIdSegnalazione(s.getId());
 				a.setSegnalazione(s);
+				a.setDataAllarme(LocalDate.of(s.getDataOraSegnalazione().getYear(), s.getDataOraSegnalazione().getMonthValue(), s.getDataOraSegnalazione().getDayOfMonth()));
+				a.setOraAllarme(LocalTime.of(s.getDataOraSegnalazione().getHour(), s.getDataOraSegnalazione().getMinute(), s.getDataOraSegnalazione().getSecond()));
 				if(s.getLivelloFumo()>=5 &&s.getLivelloFumo()<=7) {
 					a.setLivelloPeriocolosita(LivelloPericolosita.Medio);
 					dbAllarme.salvaAllarme(a);
