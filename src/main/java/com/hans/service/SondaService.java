@@ -16,10 +16,24 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class SondaService {
 	
-	@Autowired SondaRepository db;;
+	@Autowired SondaRepository db;
+	@Autowired EdificioService edificioDb;
 	
 	public Sonda salvaSonda(Sonda s) {
-		return db.save(s);
+		if(edificioDb.edificioEsistente(s.getEdificio())) {
+			return db.save(s);			
+		}else
+			throw new EntityExistsException("L'edificio passato non esiste nel DB!!");	
+	}
+	public Sonda modificaSonda(Sonda s) {
+		if(sondaEsistenteConId(s.getId())) {
+			if(edificioDb.edificioEsistente(s.getEdificio())) {
+				return db.save(s);				
+			}else {
+				throw new EntityExistsException("L'edificio passato non esiste nel DB!!"); 
+			}
+		}else 
+		throw new EntityExistsException("La sonda non esiste nel DB!!");
 	}
 	
 	public List<Sonda> trovaTutteSonde(){
@@ -56,5 +70,12 @@ public class SondaService {
 			return true;
 		}else 
 			return false;
+	}
+	
+	public boolean sondaEsistenteConId(Long id) {
+		if (db.existsById(id)){
+			return true;	
+		}else
+		return false;
 	}
 }

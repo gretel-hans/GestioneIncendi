@@ -27,29 +27,65 @@ public class SegnalazioneService {
 	@Autowired SegnalazioneRepository db;
 	@Autowired AllarmeService dbAllarme;
 	
-	GestioneProcessoSonda gPS=new GestioneProcessoSonda();
-	ProcessoSonda p1= new ProcessoSondaConcreto();
-	
+
 	
 	public Segnalazione salvaSegnalazioni(Segnalazione s) {
-		 gPS.aggiungiProcesso(p1);
-	   
-		Segnalazione segnalazione=db.save(s);
-		if(s.getLivelloFumo()>=5) {
-			Allarme a=new Allarme();
-			a.setSegnalazione(s);
-			if(s.getLivelloFumo()>=5 &&s.getLivelloFumo()<=7) {
-				a.setLivelloPeriocolosita(LivelloPericolosita.Medio);
-				dbAllarme.salvaAllarme(a);
-				 gPS.allertaProcesso(s);
-			}else if(s.getLivelloFumo()>7) {
-				a.setLivelloPeriocolosita(LivelloPericolosita.Alto);
-				dbAllarme.salvaAllarme(a);
-				gPS.allertaProcesso(s);
+		if(segnalazioneEsistente(s)) {
+			throw new EntityExistsException("ERRORE!! La segnalazione già esiste!!"); 
+		}else {
+			GestioneProcessoSonda gPS=new GestioneProcessoSonda();
+			ProcessoSonda p1= new ProcessoSondaConcreto();
+			gPS.aggiungiProcesso(p1);
+			Segnalazione segnalazione=db.save(s);
+			if(s.getLivelloFumo()>=5) {
+				Allarme a=new Allarme();
+				a.setSegnalazione(s);
+				if(s.getLivelloFumo()>=5 &&s.getLivelloFumo()<=7) {
+					a.setLivelloPeriocolosita(LivelloPericolosita.Medio);
+					dbAllarme.salvaAllarme(a);
+					
+				}else if(s.getLivelloFumo()>7) {
+					a.setLivelloPeriocolosita(LivelloPericolosita.Alto);
+					dbAllarme.salvaAllarme(a);
+				}
+				if(segnalazione!=null) {
+					gPS.allertaProcesso(segnalazione);  
+					
+				}			
 			}
+			return segnalazione;
 		}
-		return segnalazione;
 	}
+	
+	public Segnalazione modificaSegnalazione(Segnalazione s) {
+		if(!segnalazioneEsistenteConId(s.getId())) {
+			throw new EntityNotFoundException("ERRORE!! La segnalazione non esiste!!"); 
+		}else {
+			GestioneProcessoSonda gPS=new GestioneProcessoSonda();
+			ProcessoSonda p1= new ProcessoSondaConcreto();
+			gPS.aggiungiProcesso(p1);
+			Segnalazione segnalazione=db.save(s);
+			if(s.getLivelloFumo()>=5) {
+				Allarme a=new Allarme();
+				a.setSegnalazione(s);
+				if(s.getLivelloFumo()>=5 &&s.getLivelloFumo()<=7) {
+					a.setLivelloPeriocolosita(LivelloPericolosita.Medio);
+					dbAllarme.salvaAllarme(a);
+					
+				}else if(s.getLivelloFumo()>7) {
+					a.setLivelloPeriocolosita(LivelloPericolosita.Alto);
+					dbAllarme.salvaAllarme(a);
+				}
+				if(segnalazione!=null) {
+					gPS.allertaProcesso(segnalazione);  
+					
+				}			
+			}
+			return segnalazione;			
+		}
+	}
+	
+	
 	
 	public List<Segnalazione> trovaTutteSegnalazioni(){
 		return db.findAll();
@@ -63,6 +99,27 @@ public class SegnalazioneService {
 			throw new EntityNotFoundException("ERRORE!! La segnalazione cercata non esiste!!"); 
 		}
 			
+	}
+	boolean esiste;
+	public boolean segnalazioneEsistente(Segnalazione s) {
+		esiste=false;
+		db.findAll().forEach(segna->{
+			if(segna.getDataOraSegnalazione().equals(s.getDataOraSegnalazione()) && segna.getLat()==s.getLat() && segna.getLon()==s.getLon() && segna.getLivelloFumo()==s.getLivelloFumo() && segna.getSonda().equals(s.getSonda())  ){
+				esiste=true;
+			}
+		});
+		if(esiste) {
+			return true;
+		}else
+		return false;
+		
+	}
+	
+	public boolean segnalazioneEsistenteConId(Long id) {
+		if (db.existsById(id)){
+			return true;	
+		}else
+		return false;
 	}
 	
 

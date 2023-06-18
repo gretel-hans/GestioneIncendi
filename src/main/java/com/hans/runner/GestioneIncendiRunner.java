@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.hans.enums.TipoEdificio;
 import com.hans.model.Edificio;
 import com.hans.model.GestioneProcessoSonda;
 import com.hans.model.ProcessoSonda;
@@ -31,7 +32,7 @@ public class GestioneIncendiRunner implements CommandLineRunner{
 	public void run(String... args) throws Exception {
     System.out.println("Runner Gestione Incendi...");
     
-    	Edificio e=new Edificio(null, 10.53, 20.90);
+    	Edificio e=new Edificio(null,TipoEdificio.Casa, 10.53, 20.90);
     	edificioService.salvaEdificio(e);
     	
     	
@@ -51,13 +52,7 @@ public class GestioneIncendiRunner implements CommandLineRunner{
     	listaSegnalazioni.forEach(s->segnalazioneService.salvaSegnalazioni(s));
     	
     	
-    	GestioneProcessoSonda gPS=new GestioneProcessoSonda();
-    	
-    	ProcessoSonda p1= new ProcessoSondaConcreto();
-    	gPS.aggiungiProcesso(p1);
-    	
-    	gPS.allertaProcesso(segnalazioneService.trovaSegnalazione(1l));
-    
+
 	}
 
 }

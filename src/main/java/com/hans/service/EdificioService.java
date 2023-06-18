@@ -19,6 +19,13 @@ public class EdificioService {
 	public Edificio salvaEdificio(Edificio e) {
 		if(edificioEsistente(e)) {
 			throw new EntityExistsException("L'edificio già esiste nel DB!!");
+		}else
+		return edR.save(e);
+	}
+	
+	public Edificio modificaEdificio(Edificio e) {
+		if(!edificioEsistenteConId(e.getId())) {
+			throw new EntityExistsException("L'edificio non esiste nel DB!!");
 		}else 
 		return edR.save(e);
 	}
@@ -31,25 +38,19 @@ public class EdificioService {
 		Edificio e=edR.findById(id).get();
 		if(e!=null) {
 			return e;			
-		}else {			
+		}else {	
 			throw new EntityNotFoundException("ERRORE!! L'edificio cercato non esiste!!"); 
 		}
 			
 	}
 	
-	public String eliminaEdificio(Long id){
-		if(edificioEsistente(edR.findById(id).get())) {
-			edR.deleteById(id);	
-			return "L'edificio con id: "+id+" è stato eliminato dal DB!!";
-		}else 
-			throw new EntityNotFoundException("ERRORE!! L'edificio passato con l'id non esiste!!"); 
-	}
+	
 	
 	boolean esiste;
 	public boolean edificioEsistente(Edificio ed) {
 		esiste=false;
 		edR.findAll().forEach(e->{
-			if(e.getId()==ed.getId() && e.getLat()==ed.getLat() && e.getLon()==ed.getLon()) {
+			if(e.getId()==ed.getId() && e.getLat()==ed.getLat() && e.getLon()==ed.getLon()&&e.getTipo().equals(ed.getTipo())) {
 				esiste=true;
 			}
 		});
@@ -58,4 +59,15 @@ public class EdificioService {
 		}else 
 			return false;
 	}
+	
+
+	public boolean edificioEsistenteConId(Long id) {
+		if (edR.existsById(id)){
+			return true;	
+		}else
+		return false;
+	}
+
+
 }
+
